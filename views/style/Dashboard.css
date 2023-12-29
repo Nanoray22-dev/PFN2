@@ -1,0 +1,150 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background-color: rgb(255, 255, 255);
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    color: black;
+}
+
+.burger-menu {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.user-info {
+    text-align: right;
+}
+
+.navbar-container {
+    display: flex;
+}
+
+.sidebar {
+    height: 100vh;
+    width: 250px;
+    background-color: #333;
+    padding-top: 20px;
+    color: white;
+    cursor: pointer;
+}
+
+.sidebar h2 {
+    text-align: center;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 8px;
+    margin-left: 12px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: white;
+}
+
+.content {
+    flex: 1;
+    background-color: rgb(245, 246, 249);
+}
+
+
+/* parte interactiva */
+
+.interactiveMenu {
+    width: 170px;
+    height: 164px;
+    border-radius: 12px;
+    border: 1px;
+    border: 1px solid #E0E0E0;
+    visibility: hidden;
+    position: absolute;
+    top: 60px;
+    right: 40px;
+}
+
+
+
+.desplegar {
+    visibility: visible;
+}
+
+
+.logOutInteractive {
+    margin-top: 20px;
+    padding: 5px;
+    color: #EB5757;
+
+}
+
+ul {
+    list-style: none;
+}
+
+h4 {
+    text-align: center;
+}
+
+.aTextInteractive {
+    text-decoration: none;
+    color: #4F4F4F;
+
+}
+
+.aTextInteractiveLog {
+    text-decoration: none;
+    color: #EB5757;
+
+}
+
+
+/* parte del logo */
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid gray;
+}
+
+.sidebar-header img {
+    width: 50px;
+    /* Ajusta el ancho según sea necesario */
+    margin-right: 10px;
+    /* Espacio entre la imagen y el texto */
+}
+
+
+/* Dashboard */
+
+h1 {
+    margin-left: 20px;
+}
+
+.Dashboard {
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+.Dashboard h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.Dashboard p {
+    color: #666;
+    font-size: 16px;
+}
