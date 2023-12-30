@@ -100,10 +100,27 @@ class ViewModel
 
     public function find($id)
     {
-        $rs = $this->conexion->query("SELECT * FROM {$this->table} where id = $id");
-        $data = $rs->fetch_all(MYSQLI_ASSOC);
+        // Utiliza una sentencia preparada para evitar la inyección de SQL
+        $stmt = $this->conexion->prepare("SELECT * FROM {$this->table} WHERE id = ?");
+        
+        // Vincula el parámetro
+        $stmt->bind_param("i", $id);
+        
+        // Ejecuta la consulta
+        $stmt->execute();
+        
+        // Obtiene el resultado
+        $result = $stmt->get_result();
+        
+        // Obtiene los datos como un array asociativo
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+        
+        // Cierra la sentencia preparada
+        $stmt->close();
+        
         return $data;
     }
+    
 
     public function create($data)
     {
@@ -138,16 +155,30 @@ class ViewModel
         }
 
         session_start();
-        // var_dump($_SESSION["usuarioid_edit"]);
-        $query = "update {$this->table} set " . implode(", ", $updatePairs) . " where id = {$_SESSION["usuarioid_edit"]}";
-        // var_dump($query);
-        $this->conexion->query($query);
+
+        $query = "UPDATE `usuarios` SET `rol_id `= ? WHERE correo = ? ";
+
+        try {
+            $updateId = $this->conexion->prepare($query);
+            $updateId->execute([$data]);
+            $rs = $updateId->fetch(MYSQLI_ASSOC);
+            return $rs;
+        } catch (mysqli_sql_exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 
 
     public function delete($id)
     {
-        $this->conexion->query("delete from {$this->table} where id = $id");
+        $query = "DELETE FROM usuarios WHERE id = $id";
+        try {
+            $data = $this ->conexion->prepare($query);
+            $data -> execute([$id]);
+
+        } catch (mysqli_sql_exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 
     public function login($A, $B, $operator, $value, $password)

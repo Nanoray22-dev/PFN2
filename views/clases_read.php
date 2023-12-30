@@ -447,14 +447,14 @@
                                                                                 break;
                                                                         }
 
-                                                                        switch ($clase["inscritos"]) {
+                                                                        switch ($clase["maestro_nombre"]) {
                                                                             case 0:
                                                                                 $alumnosInscritos = "Sin Alumnos";
                                                                                 $estilo2 = "bg-orange-100 text-black text-bold rounded-full px-2 py-0.5";
                                                                                 break;
 
                                                                             default:
-                                                                                $alumnosInscritos = $clase["inscritos"];
+                                                                                $alumnosInscritos = $clase["maestro_nombre"];
                                                                                 $estilo2 = "";
                                                                                 break;
                                                                         }

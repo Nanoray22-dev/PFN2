@@ -85,7 +85,7 @@ if ($method === "GET") {
             $maestroEnrutador->create();
             break;
         case '/maestros/edit';
-            $maestroEnrutador->edit($_GET["id"]);
+            $maestroEnrutador->edit($_GET["$id"]);
         case '/clases';
             $clasesEnrutador->index();
             break;
@@ -98,7 +98,7 @@ if ($method === "GET") {
             $alumnosEnrutador->index();
             break;
         case '/alumnos/edit';
-            $alumnosEnrutador->edit($_GET["$id"]);
+            $alumnosEnrutador->edit($_GET["id"]);
             break;
         case '/alumnos/create';
             $alumnosEnrutador->create();
