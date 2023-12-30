@@ -9,9 +9,9 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/models/viewModel.php";
 
 if (isset($_SESSION['user'])) {
     $usuario = $_SESSION['user'];
-    $alumnos = ['clases'];
-    $noAdministador = ['clases', 'alumnos'];
-    $Administador = ['Permisos','Maestros' , 'Alumnos', 'Clases'];
+    $alumnos = ['clases' => 'index.php?'];
+    $noAdministador = ['clases' => 'index.php?', 'alumnos' => 'index.php?',];
+    $Administador = ['Permisos' => 'index.php?', 'Maestros' => 'index.php?', 'Alumnos' => 'index.php?', 'Clases' => 'index.php?',];
 
     if ($usuario['rol_id'] === 1) {
         $menu = $Administador;
@@ -198,12 +198,14 @@ $user = $_SESSION["user"]["nombre"];
             </div>
 
             <ul class="side-bar-side">
-                <h4 class="admin">Menu Administracion</h4>
+                <h4 class="admin">Menu <?= $rol ?></h4>
 
+                
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">Home</i>
                     <a href="/dashboard">Home</a>
                 </li>
+                <?php if($usuario['rol_id'] === 1 ) {?>
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">security</i>
                     <a href="/permisos">Permisos</a>
@@ -212,7 +214,9 @@ $user = $_SESSION["user"]["nombre"];
                     <i class="material-symbols-outlined logOutText">group</i>
                     <a href="/maestros">Maestros</a>
                 </li>
-
+                    <?php }else{
+                        $usuario['rol_id'] === 2;
+                    }?>
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">school</i>
                     <a href="/alumnos">Alumnos</a>

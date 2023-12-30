@@ -109,7 +109,7 @@ if ($method === "GET") {
     }
 }
 
-
+// session_start();
 
 if (isset($_SESSION['user'])) {
     $usuario = $_SESSION['user'];
@@ -126,8 +126,9 @@ if (isset($_SESSION['user'])) {
     }
 }
 
-
 ?>
+
+
 
 
 
@@ -139,6 +140,7 @@ if (isset($_SESSION['user'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>University</title>
 </head>
 

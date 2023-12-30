@@ -27,7 +27,18 @@ class LoginController
 
             header("Location: /dashboard");
         } else {
-            echo "Credenciales incorrectas";
+            echo '<script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Invalid login credentials",
+                            footer: \'<a href="#">Why do I have this issue?</a>\'
+                        });
+                    });
+                  </script>';
+
+            header("Location: /views/login.php");
         }
     }
 

@@ -131,18 +131,19 @@ class ViewModel
     public function update($data)
     {
         // Esto hace que sin importar los pares de clave y valor de la variable $data, el $query sea reutilizable.
-        $update = [];
+        $updatePairs = [];
 
         foreach ($data as $key => $value) {
-            $update[] = "$key = '$value'";
+            $updatePairs[] = "$key = '$value'";
         }
 
         session_start();
         // var_dump($_SESSION["usuarioid_edit"]);
-        $query = "update {$this->table} set " . implode(", ", $update) . " where id = {$_SESSION["usuarioid_edit"]}";
+        $query = "update {$this->table} set " . implode(", ", $updatePairs) . " where id = {$_SESSION["usuarioid_edit"]}";
         // var_dump($query);
         $this->conexion->query($query);
     }
+
 
     public function delete($id)
     {
@@ -164,5 +165,10 @@ class ViewModel
         $data = $res->fetch_all(MYSQLI_ASSOC);
 
         return $data;
+    }
+
+    public function __toString()
+    {
+        return 'Output';
     }
 }
