@@ -14,10 +14,14 @@
 </head>
 
 <body>
-    <?php
+
+<?php
     session_start();
     require_once $_SERVER["DOCUMENT_ROOT"] . "/models/viewModel.php";
+    !isset($maestros) && header("Location: /maestros");
 
+    $count = new ViewModel();
+    $data = $count->allMaestroUser();
     $ocultar_div_permisos = 'hidden';
 
     //var_dump($pors_Admin * 1000);
@@ -25,8 +29,17 @@
     $usuarios = $_SESSION["user"];
     //var_dump($usuarios["Rol"]);
     $user = $_SESSION["user"]["nombre"];
-    ?>
 
+    // if (isset($maestros['id'])) {
+    //     $maestroId = $maestros['id'];
+
+    //     // The rest of your code that uses $maestroId
+    //     // ...
+    // } else {
+    //     // Handle the case where 'id' key is not present in the array
+    //     echo "The 'id' key is not present in the \$maestros array.";
+    // }
+    ?>
 
     <div class="flex h-screen bg-gray-800 " :class="{ 'overflow-hidden': isSideMenuOpen }">
 
@@ -447,7 +460,7 @@
                                                                 </thead>
                                                                 <tbody class="bg-white divide-y divide-gray-200">
                                                                     <?php
-                                                                    //var_dump($maestros);
+
                                                                     foreach ($maestros as $maestro) {
                                                                         switch ($maestro["clase_id"]) {
                                                                             case Null:
@@ -462,7 +475,7 @@
                                                                                 $estilo = "";
                                                                                 break;
                                                                         }
-                                                                        //$status = $maestro["estatus"] == 1 ? "Activo" : "Inactivo";
+
 
                                                                     ?>
                                                                         <tr>
@@ -519,7 +532,7 @@
                                                                                     <?php
                                                                                     }
                                                                                     ?>
-                                                                                    <!---->
+
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -671,7 +684,7 @@
 
     .navbar-header {
         justify-content: space-between;
-        gap: 930px;
+        gap: 1110px;
     }
 
 
@@ -691,7 +704,7 @@
     /* .nav-home {
     list-style: none;
     padding-top: 25px;
-} */
+    } */
 
     h4 {
         text-align: center;
@@ -898,7 +911,7 @@
     width: 100%;
     padding: 8px;
     margin-bottom: 16px;
-} */
+    } */
 
 
     .head-search {
@@ -935,17 +948,41 @@
     .nav-user {
         color: #000;
     }
+
+    .header-img {
+        border-bottom: 1px solid #666;
+    }
+
+    .admin {
+        padding: 12px;
+        border-bottom: 1px solid #666;
+        padding-bottom: 12px;
+    }
+
+    .side-bar-inside {
+        padding-top: 22px;
+    }
+
+    .user-navigation {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    span.User {
+        padding-top: 10px;
+    }
 </style>
 
 <body>
+   
     <div class="navbar-container">
         <!-- Sidebar -->
         <div class="sidebar">
             <h1>Universidad</h1>
-            <div class="flex justify-center">
+            <div class="flex justify-center header-img">
                 <div class="">
                     <img class="hidden h-24 w-24 rounded-full sm:block object-cover mr-2 border-4 " src="../assets/logo.jpeg" alt="">
-                    <p class="font-bold text-base  text-gray-400 pt-2 text-center w-24"><?php echo $rol ?></p>
+                    <p class="font-bold text-base  text-gray-400 pt-2 text-center w-24"><?php echo $user ?></p>
                 </div>
             </div>
             <ul class="side-bar-side">
@@ -980,11 +1017,11 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link nav-user link-user dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Nombre del servidoor
+                            <?= $rol ?>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/views/template/Dashboard.php">Home</a></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                            <li><a class="dropdown-item" href="/index.php">Logout</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -1020,49 +1057,96 @@
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar Maestro</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- <h3>Agregar Maestro</h3> -->
+                            <div class="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
 
-                                <form d="formularioMaestro">
-                                    <div class="insert-Container">
-                                        <label for="Email" class="form-labe">Correo Electronico</label>
-                                        <input type="email" class="form-control" id="Email1" aria-describedby="emailHelp">
+                                <div class="fixed z-10 inset-0 overflow-y-auto">
+                                    <div class="flex items-center justify-center min-h-screen">
+                                        <div class="bg-white rounded-lg p-8 m-4 max-w-xl w-full show-modal">
+                                            <h2 class="text-2xl font-bold mb-8">Nuevos Maestros</h2>
+                                            <form id="editPermisos" action="/maestros/create" method="post">
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo:</label>
+                                                    <input type="text" id="correo" name="correo" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre:</label>
+                                                    <input type="text" id="nombre" name="nombre" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Nombre">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">DNI:</label>
+                                                    <input type="text" id="dni" name="dni" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="DNI">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="direccion">Dirección:</label>
+                                                    <input type="text" id="direccion" name="direccion" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Direccion">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="fecha_nac">Fecha Nacimiento:</label>
+                                                    <input type="date" id="fecha_nac" name="fecha_nac" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
+                                                </div>
+                                                <div class="hidden mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="rol_id">Rol_id:</label>
+                                                    <input type="text" id="rol_id" name="rol_id" value="2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Rol">
+                                                </div>
+                                                <div class="hidden mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="estatus">Estatus:</label>
+                                                    <input type="text" id="estatus" name="estatus" value="1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Activo o Inactivo">
+                                                </div>
+                                                <div class="hidden mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password:</label>
+                                                    <input type="password" id="password" name="password" value="maestro" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Password">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="clase_id">Clase Asignada:</label>
+                                                    <div class="flex col-span-3 sm:col-span-1">
+                                                        <input id="clase_id" name="" disabled value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" placeholder="Rol del Usuario">
+
+                                                        <select id="rolesUsuarios" name="clase_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                            <option value='' selected disabled>Seleccione una Clase</option>
+                                                            <option value='NULL'>--Ninguno--</option>
+                                                            <option value='1'>Español</option>
+                                                            <option value='2'>Algebra</option>
+                                                            <option value='3'>Contabilidad 1</option>
+                                                            <option value='4'>Ecuaciones Diferenciales</option>
+                                                            <option value='5'>PHP</option>
+                                                            <option value='6'>Laravel</option>
+                                                            <option value='7'>Programación de Bases de Datos</option>
+                                                            <option value='8'>React</option>
+                                                            <option value='9'>JavaScript</option>
+                                                            <option value='10'>HTML CSS</option>
+                                                            <option value='11'>Bootstrap Tailwindcss</option>
+                                                            <option value='12'>MVC POO</option>
+                                                            <option value='13'>Git Github</option>
+                                                            <option value='14'>Valores</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="estatus">Estatus:</label>
+                                                    <div class="flex col-span-2 sm:col-span-1">
+                                                        <input type="text" id="estatus" disabled name="" value="<?= $maestro["estatus"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" placeholder="Estatus del Usuario">
+
+                                                        <select id="estatusUsuarios" name="estatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                            <option value='' selected disabled>Seleccione un Estatus</option>
+                                                            <option value='1'>Activo</option>
+                                                            <option value='0'>Inactivo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex items-center justify-between">
+                                                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                                                        Guardar cambios
+                                                    </button>
+                                                    <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline close-modal">
+                                                        <a href="/maestros">Cerrar</a>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="insert-Container">
-                                        <label for="Email" class="form-labe">Nombre(s)</label>
-                                        <input type="text" class="form-control" id="Email" aria-describedby="name">
-                                    </div>
-                                    <div class="insert-Container">
-                                        <label for="apellidos" class="form-labe">Apellido(s)</label>
-                                        <input type="text" class="form-control" id="apellidos" aria-describedby="last-name">
-                                    </div>
-                                    <div class="insert-Container">
-                                        <label for="direccion" class="form-labe">Dirección</label>
-                                        <input type="text" class="form-control" id="direccion" aria-describedby="adress">
-                                    </div>
-                                    <div class="insert-Container">
-                                        <label for="Date" class="form-labe">Fecha de Nacimiento</label>
-                                        <input type="date" class="form-control" id="fechaNacimiento" aria-describedby="date">
-                                    </div>
-                                    <div class="insert-Container">
-                                        <label for="selectClases" class="form-labe">Clases Asignadas:</label>
-                                        <select class="form-select" id="selectClases" aria-label="Seleccione una clase">
-                                            <option selected>Selecciona una clase</option>
-                                            <option value="clase1">Clase 1</option>
-                                            <option value="clase2">Clase 2</option>
-                                            <option value="clase3">Clase 3</option>
-                                        </select>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary">Agregar</button>
-                            </div>
+                                </div>
+                            </div>>
                         </div>
                     </div>
                 </div>
@@ -1072,55 +1156,97 @@
 
 
                 <!-- Modal -->
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade" id="x" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Maestro</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <h3>Editar Maestro</h3>
+                            <div class="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
 
-                                <form d="formularioMaestro">
-                                    <div class="insert-Container">
-                                        <label for="Email" class="form-labe">Correo Electronico</label>
-                                        <input type="email" class="form-control" id="Email1" aria-describedby="emailHelp">
+                                <div class="fixed z-10 inset-0 overflow-y-auto">
+                                    <div class="flex items-center justify-center min-h-screen">
+                                        <div class="bg-white rounded-lg p-8 m-4 max-w-xl w-full show-modal">
+                                            <h2 class="text-2xl font-bold mb-8">Editar Maestros</h2>
+                                            <form id="editPermisos" action="/maestros/update" method="post">
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo:</label>
+                                                    <input type="text" id="correo" name="correo" disabled value="<?= $maestro["correo"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre:</label>
+                                                    <input type="text" id="nombre" name="nombre" value="<?= $maestro["nombre_maestro"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="direccion">Dirección:</label>
+                                                    <input type="text" id="direccion" name="direccion" value="<?= $maestro["direccion"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="fecha_nac">Fecha Nacimiento:</label>
+                                                    <input type="date" id="fecha_nac" name="fecha_nac" value="<?= $maestro["fecha_nac"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="clase_id">Clase Asignada:</label>
+                                                    <div class="flex col-span-3 sm:col-span-1">
+                                                        <input id="clase_id" name="" disabled value="<?= $maestro["clase_id"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" placeholder="Rol del Usuario">
+
+                                                        <select id="rolesUsuarios" name="clase_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                            <option value='' selected disabled>Seleccione una Clase</option>
+                                                            <option value='NULL'>--Ninguno--</option>
+                                                            <option value='1'>Español</option>
+                                                            <option value='2'>Algebra</option>
+                                                            <option value='3'>Contabilidad 1</option>
+                                                            <option value='4'>Ecuaciones Diferenciales</option>
+                                                            <option value='5'>PHP</option>
+                                                            <option value='6'>Laravel</option>
+                                                            <option value='7'>Programación de Bases de Datos</option>
+                                                            <option value='8'>React</option>
+                                                            <option value='9'>JavaScript</option>
+                                                            <option value='10'>HTML CSS</option>
+                                                            <option value='11'>Bootstrap Tailwindcss</option>
+                                                            <option value='12'>MVC POO</option>
+                                                            <option value='13'>Git Github</option>
+                                                            <option value='14'>Valores</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="estatus">Estatus:</label>
+                                                    <div class="flex col-span-2 sm:col-span-1">
+                                                        <input type="text" id="estatus" disabled name="" value="<?= $maestro["estatus"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" placeholder="Estatus del Usuario">
+
+                                                        <select id="estatusUsuarios" name="estatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                            <option value='' selected disabled>Seleccione un Estatus</option>
+                                                            <option value='1'>Activo</option>
+                                                            <option value='0'>Inactivo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex items-center justify-between">
+                                                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                                                        Guardar cambios
+                                                    </button>
+                                                    <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline close-modal">
+                                                        <a href="/maestros">Cerrar</a>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="insert-Container">
-                                        <label for="Email" class="form-labe">Nombre(s)</label>
-                                        <input type="text" class="form-control" id="Email" aria-describedby="name">
-                                    </div>
-                                    <div class="insert-Container">
-                                        <label for="apellidos" class="form-labe">Apellido(s)</label>
-                                        <input type="text" class="form-control" id="apellidos" aria-describedby="last-name">
-                                    </div>
-                                    <div class="insert-Container">
-                                        <label for="direccion" class="form-labe">Dirección</label>
-                                        <input type="text" class="form-control" id="direccion" aria-describedby="adress">
-                                    </div>
-                                    <div class="insert-Container">
-                                        <label for="Date" class="form-labe">Fecha de Nacimiento</label>
-                                        <input type="date" class="form-control" id="fechaNacimiento" aria-describedby="date">
-                                    </div>
-                                    <div class="insert-Container">
-                                        <label for="selectClases" class="form-labe">Clases Asignadas:</label>
-                                        <select class="form-select" id="selectClases" aria-label="Seleccione una clase">
-                                            <option selected>Selecciona una clase</option>
-                                            <option value="clase1">Clase 1</option>
-                                            <option value="clase2">Clase 2</option>
-                                            <option value="clase3">Clase 3</option>
-                                        </select>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Understood</button>
-                            </div>
+
+                            <!-- Cambiando los roles del menú desplegable -->
+                            <script type="text/javascript">
+                                // Actualizar el valor del input cuando cambia el valor del select
+                                document.getElementById('rolesUsuarios').addEventListener('change', function() {
+                                    var valorSeleccionadoRol = this.value;
+                                    document.getElementById('clase_id').value = valorSeleccionadoRol;
+                                    //$asignatura = valorSeleccionadoRol;
+                                });
+                            </script>
                         </div>
                     </div>
                 </div>
+
                 <!-- Editor en la tablas -->
 
                 <nav class="navbar navbar-expand  navbar-body">
@@ -1173,60 +1299,69 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="border-table">Dato 1</td>
-                            <td class="border-table">Dato 2</td>
-                            <td class="border-table">Dato 3</td>
-                            <td class="border-table">Dato 4</td>
-                            <td class="border-table">Dato 5</td>
-                            <td class="border-table">Dato 6</td>
-                            <td class="border-table-action">
-                                <a type="button" class="btn-primary table-action" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    <i class="fa-solid fa-pen-to-square "></i>
-                                </a>
-                                <a><i class="fa-solid fa-trash"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border-table">Dato 1</td>
-                            <td class="border-table">Dato 2</td>
-                            <td class="border-table">Dato 3</td>
-                            <td class="border-table">Dato 4</td>
-                            <td class="border-table">Dato 5</td>
-                            <td class="border-table">Dato 6</td>
-                            <td class="border-table">Dato 7</td>
-                        </tr>
-                        <tr>
-                            <td class="border-table">Dato 1</td>
-                            <td class="border-table">Dato 2</td>
-                            <td class="border-table">Dato 3</td>
-                            <td class="border-table">Dato 4</td>
-                            <td class="border-table">Dato 5</td>
-                            <td class="border-table">Dato 6</td>
-                            <td class="border-table">Dato 7</td>
-                        </tr>
-                        <tr>
-                            <td class="border-table">Dato 1</td>
-                            <td class="border-table">Dato 2</td>
-                            <td class="border-table">Dato 3</td>
-                            <td class="border-table">Dato 4</td>
-                            <td class="border-table">Dato 5</td>
-                            <td class="border-table">Dato 6</td>
-                            <td class="border-table">Dato 7</td>
-                        </tr>
-                        <tr>
-                            <td class="border-table">Dato 1</td>
-                            <td class="border-table">Dato 2</td>
-                            <td class="border-table">Dato 3</td>
-                            <td class="border-table">Dato 4</td>
-                            <td class="border-table">Dato 5</td>
-                            <td class="border-table">Dato 6</td>
-                            <td class="border-table">Dato 7</td>
-                        </tr>
+                        <?php
+
+                        foreach ($maestros as $maestro) {
+                            switch ($maestro["clase_id"]) {
+                                case Null:
+                                    $claseAsignada = "Sin Asignación";
+                                    $btn_delete = true;
+                                    $estilo = "bg-yellow-500 text-white rounded px-2 py-0.5";
+                                    break;
+
+                                default:
+                                    $claseAsignada = $maestro["nombre_clase"];
+                                    $btn_delete = false;
+                                    $estilo = "";
+                                    break;
+                            }
+
+
+                        ?>
+                            <tr>
+                                <td class="border-table">
+                                    <p><?= $maestro["id"] ?></p>
+                                </td>
+                                <td class="border-table">
+                                    <p><?= $maestro["nombre_maestro"] ?></p>
+                                </td>
+                                <td class="border-table">
+                                    <p><?= $maestro["correo"] ?></p>
+                                </td>
+                                <td class="border-table">
+                                    <p><?= $maestro["direccion"] ?></p>
+                                </td>
+                                <td class="border-table">
+                                    <p><?= $maestro["fecha_nac"] ?></p>
+                                </td>
+                                <td class="border-table">
+                                    <p class="<?= $estilo ?>"><?= $claseAsignada ?></p>
+                                </td>
+                                <td class="border-table-action">
+                                    <a type="button" class="btn-primary table-action" data-bs-toggle="modal" data-bs-target="#x" href="/maestros/edit?id=<?= $maestro["id"] ?>">
+                                        <i class="fa-solid fa-pen-to-square "></i>
+                                    </a>
+                                    <a>
+                                        <i class="fa-solid fa-trash"> <?php
+                                                                        if ($btn_delete)
+                                                                        ?>
+                                        </i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                        <?php } ?>
                     </tbody>
                 </table>
 
-                <nav aria-label="Page navigation ">
+                <nav class="user-navigation" aria-label="Page navigation ">
+                    <span class="User">
+                        Showing
+                        <?php echo (is_array($data) && isset($data[0]['count(*)'])) ? $data[0]['count(*)'] : 0; ?> to
+                        <?php echo (is_array($data) && isset($data[0]['count(*)'])) ? $data[0]['count(*)'] : 0; ?> of entries
+
+                    </span>
+
                     <ul class="pagination justify-content-end">
                         <li class="page-item ">
                             <a class="page-link disabled">Previous</a>
@@ -1277,6 +1412,11 @@
         function mostrarEditor() {
             var over = document.getElementById('over');
             over.style.display = 'flex';
+        }
+
+        function cerrarFormulario() {
+            var overlay = document.getElementById('over');
+            overlay.style.display = 'none';
         }
 
         function cerrarFormulario() {

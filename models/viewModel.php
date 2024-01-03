@@ -100,27 +100,16 @@ class ViewModel
 
     public function find($id)
     {
-        // Utiliza una sentencia preparada para evitar la inyección de SQL
         $stmt = $this->conexion->prepare("SELECT * FROM {$this->table} WHERE id = ?");
-        
-        // Vincula el parámetro
         $stmt->bind_param("i", $id);
-        
-        // Ejecuta la consulta
         $stmt->execute();
-        
-        // Obtiene el resultado
         $result = $stmt->get_result();
-        
-        // Obtiene los datos como un array asociativo
         $data = $result->fetch_all(MYSQLI_ASSOC);
-        
-        // Cierra la sentencia preparada
         $stmt->close();
-        
+
         return $data;
     }
-    
+
 
     public function create($data)
     {
@@ -147,24 +136,41 @@ class ViewModel
 
     public function update($data)
     {
-        // Esto hace que sin importar los pares de clave y valor de la variable $data, el $query sea reutilizable.
-        $updatePairs = [];
-
-        foreach ($data as $key => $value) {
-            $updatePairs[] = "$key = '$value'";
-        }
-
-        session_start();
-
-        $query = "UPDATE `usuarios` SET `rol_id `= ? WHERE correo = ? ";
-
         try {
+            // Verificar si 'id' está presente en el array $data
+            if (!isset($data['id'])) {
+                throw new Exception("Error: El índice 'id' es obligatorio para la actualización.");
+            }
+    
+            // Construir pares clave-valor para la actualización
+            $updatePairs = [];
+            foreach ($data as $key => $value) {
+                // Excluir 'id' de los pares clave-valor para evitar actualizarlo
+                if ($key !== 'id') {
+                    $updatePairs[] = "$key = '$value'";
+                }
+            }
+    
+            // Verificar si hay campos para actualizar
+            if (empty($updatePairs)) {
+                throw new Exception("Error: No hay campos para actualizar.");
+            }
+    
+            // Convertir el array en una cadena para la consulta
+            $updateString = implode(', ', $updatePairs);
+    
+            // Construir la consulta SQL
+            $query = "UPDATE `usuarios` SET $updateString WHERE `id` = {$data['id']}";
+    
+            // Preparar y ejecutar la consulta
             $updateId = $this->conexion->prepare($query);
-            $updateId->execute([$data]);
-            $rs = $updateId->fetch(MYSQLI_ASSOC);
-            return $rs;
-        } catch (mysqli_sql_exception $e) {
-            echo "Error: " . $e->getMessage();
+            $updateId->execute();
+    
+            // Retorna un indicador de éxito, puedes personalizar según tus necesidades
+            return true;
+        } catch (Exception $e) {
+            // Manejar cualquier excepción
+            throw new Exception("Error al actualizar usuario: " . $e->getMessage());
         }
     }
 
@@ -173,9 +179,8 @@ class ViewModel
     {
         $query = "DELETE FROM usuarios WHERE id = $id";
         try {
-            $data = $this ->conexion->prepare($query);
-            $data -> execute([$id]);
-
+            $data = $this->conexion->prepare($query);
+            $data->execute([$id]);
         } catch (mysqli_sql_exception $e) {
             echo "Error: " . $e->getMessage();
         }

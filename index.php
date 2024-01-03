@@ -34,6 +34,8 @@ if ($method === "POST") {
         case '/maestros/edit';
             $maestroEnrutador->update($_POST);
             break;
+            case '/maestros/update';
+            $maestroEnrutador->update($_POST);
         case '/maestros/delete';
             $maestroEnrutador->delete($_POST["$id"]);
         case '/clases/delete';
@@ -85,7 +87,7 @@ if ($method === "GET") {
             $maestroEnrutador->create();
             break;
         case '/maestros/edit';
-            $maestroEnrutador->edit($_GET["$id"]);
+            $maestroEnrutador->edit($_GET["id"]);
         case '/clases';
             $clasesEnrutador->index();
             break;

@@ -435,7 +435,7 @@ $user = $_SESSION["user"]["nombre"];
             <div class="flex justify-center img">
                 <div class="central-img">
                     <img class="hidden h-24 w-24 rounded-full sm:block object-cover mr-2 border-4" src="../assets/logo.jpeg" alt="">
-                    <p class="font-bold text-base  text-gray-400 pt-2 text-center w-24"><?php echo $user ?></p>
+                    <p class="font-bold text-base  text-gray-400 pt-2 text-center w-24"><?= $user ?></p>
                 </div>
             </div>
 
@@ -447,13 +447,13 @@ $user = $_SESSION["user"]["nombre"];
                     foreach ($permisos as $menu) {
                         switch ($menu["rol_id"]) {
                             case 1:
-                                $rol = "Admin";
+                                $roles = "Admin";
                                 break;
                             case 2:
-                                $rol = "Maestro";
+                                $roles = "Maestro";
                                 break;
                             case 3:
-                                $rol = "Alumno";
+                                $roles = "Alumno";
                                 break;
                         } ?><?php } ?>
                 </h4>
@@ -487,7 +487,7 @@ $user = $_SESSION["user"]["nombre"];
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link nav-user dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo $rol ?>
+                            <?= $rol ?>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/dashboard">Home</a></li>

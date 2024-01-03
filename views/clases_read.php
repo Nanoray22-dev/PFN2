@@ -15,7 +15,7 @@
 
 <body>
     <?php
-    session_start();
+    session_start(); 
     require_once $_SERVER["DOCUMENT_ROOT"] . "/models/viewModel.php";
 
     $ocultar_div_permisos = 'hidden';

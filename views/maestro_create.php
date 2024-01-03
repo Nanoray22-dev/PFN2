@@ -40,15 +40,15 @@ session_start();
                     </div>
                     <div class="hidden mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="rol_id">Rol_id:</label>
-                        <input type="text" id="rol_id" name="rol_id" value="2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
+                        <input type="text" id="rol_id" name="rol_id" value="2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Rol">
                     </div>
                     <div class="hidden mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="estatus">Estatus:</label>
-                        <input type="text" id="estatus" name="estatus" value="1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
+                        <input type="text" id="estatus" name="estatus" value="1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Activo o Inactivo">
                     </div>
                     <div class="hidden mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password:</label>
-                        <input type="password" id="password" name="password" value="maestro" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
+                        <input type="password" id="password" name="password" value="maestro" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Password">
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="clase_id">Clase Asignada:</label>
