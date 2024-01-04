@@ -23,14 +23,10 @@
 
     $ocultar_div_permisos = 'hidden';
 
-    //var_dump($pors_Admin * 1000);
+
     $rol = $_SESSION["user"]["Rol"];
     $usuarios = $_SESSION["user"];
-    //var_dump($usuarios["Rol"]);
     $user = $_SESSION["user"]["nombre"];
-
-    // session_start();
-    //$_SESSION["usuarioid_edit"] = $usuarios["id"];
     $student = $_SESSION["user"];
     ?>
 

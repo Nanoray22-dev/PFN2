@@ -34,3 +34,6 @@ class AlumnoController{
         header('location : /alumnos');
     }
 }
+
+// $alumnosController = new AlumnoController();
+// $alumnosController->delete(1);
