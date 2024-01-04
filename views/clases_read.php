@@ -100,7 +100,7 @@ $user = $_SESSION["user"]["nombre"];
 
     .navbar-header {
         justify-content: space-between;
-        gap: 930px;
+        gap: 1030px;
     }
 
     .desplegar {
@@ -441,7 +441,7 @@ $user = $_SESSION["user"]["nombre"];
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link nav-name dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Nombre del servidoor
+                           <?= $rol ?>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/dashboard">Home</a></li>
@@ -534,7 +534,7 @@ $user = $_SESSION["user"]["nombre"];
                     <!-- </div> -->
                 </nav>
 
-                <table>
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th class="border-table">#</th>
@@ -549,7 +549,7 @@ $user = $_SESSION["user"]["nombre"];
                             switch ($clase['maestro_nombre']) {
                                 case Null:
                                     $maestroAsignado = "Sin Asignacion";
-                                    $estilo = "bg-orange-500 text-white rounded-full px-2 py-0.5";
+                                    $estilo = "bg-orange-500 text-white rounded px-2 py-0.5";
                                     break;
 
                                 default:
@@ -560,7 +560,7 @@ $user = $_SESSION["user"]["nombre"];
                             switch ($clase["maestro_nombre"]) {
                                 case 0:
                                     $alumnosInscritos = "Sin Alumnos";
-                                    $estilo2 = "bg-orange-100 text-black text-bold rounded-full px-2 py-0.5";
+                                    $estilo2 = "bg-orange-100 text-black text-bold rounded px-2 py-0.5";
                                     break;
 
                                 default:

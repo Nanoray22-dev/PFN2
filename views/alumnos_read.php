@@ -123,7 +123,11 @@
         flex: 1;
         background-color: rgb(245, 246, 249);
     }
-
+    .content {
+        width: 80%;
+        max-height: 750px;
+        overflow-y: auto;
+    }
 
     /* parte interactiva */
 

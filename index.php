@@ -113,20 +113,20 @@ if ($method === "GET") {
 
 // session_start();
 
-if (isset($_SESSION['user'])) {
-    $usuario = $_SESSION['user'];
-    $alumnos = ['clases' => 'index.php?'];
-    $noAdministador = ['clases' => 'index.php?', 'alumnos' => 'index.php?',];
-    $Administador = ['Permisos' => 'index.php?', 'Maestros' => 'index.php?', 'Alumnos' => 'index.php?', 'Clases' => 'index.php?',];
+// if (isset($_SESSION['user'])) {
+//     $usuario = $_SESSION['user'];
+//     $alumnos = ['clases' => 'index.php?'];
+//     $noAdministador = ['clases' => 'index.php?', 'alumnos' => 'index.php?',];
+//     $Administador = ['Permisos' => 'index.php?', 'Maestros' => 'index.php?', 'Alumnos' => 'index.php?', 'Clases' => 'index.php?',];
 
-    if ($usuario['rol_id'] === 1) {
-        $menu = $Administador;
-    } else if ($usuario['rol_id'] === 2) {
-        $menu = $noAdministador;
-    } else if ($usuario['rol_id'] === 3) {
-        $menu = $alumnos;
-    }
-}
+//     if ($usuario['rol_id'] === 1) {
+//         $menu = $Administador;
+//     } else if ($usuario['rol_id'] === 2) {
+//         $menu = $noAdministador;
+//     } else if ($usuario['rol_id'] === 3) {
+//         $menu = $alumnos;
+//     }
+// }
 
 ?>
 

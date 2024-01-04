@@ -423,6 +423,13 @@
     span.User {
         padding-top: 10px;
     }
+    .content {
+        flex: 1;
+        background-color: rgb(245, 246, 249);
+        width: 80%;
+        max-height: 750px;
+        overflow-y: auto;
+    }
 </style>
 
 <body>
