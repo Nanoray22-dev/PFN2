@@ -133,7 +133,7 @@ class ViewModel
             echo "Error: " . $e->getMessage();
         }
     }
-
+// ///////////////////////////////////////////////////////////////////////////////////
     public function update($data)
     {
         try {
@@ -173,7 +173,7 @@ class ViewModel
             throw new Exception("Error al actualizar usuario: " . $e->getMessage());
         }
     }
-
+// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function delete($id)
     {

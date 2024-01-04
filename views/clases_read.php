@@ -444,8 +444,8 @@ $user = $_SESSION["user"]["nombre"];
                             Nombre del servidoor
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/views/template/Dashboard.php">Home</a></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                            <li><a class="dropdown-item" href="/dashboard">Home</a></li>
+                            <li><a class="dropdown-item" href="/index.php">Logout</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
