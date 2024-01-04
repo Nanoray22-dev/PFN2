@@ -96,7 +96,7 @@ $user = $_SESSION["user"]["nombre"];
     }
 
     .side-bar-side a {
-        padding-top: 25px;
+        /* padding-top: 25px; */
         display: inline-flex;
         padding-left: 12px;
     }
@@ -447,7 +447,7 @@ $user = $_SESSION["user"]["nombre"];
                     foreach ($permisos as $menu) {
                         switch ($menu["rol_id"]) {
                             case 1:
-                                $roles = "Admin";
+                                $roles = "Administrador";
                                 break;
                             case 2:
                                 $roles = "Maestro";

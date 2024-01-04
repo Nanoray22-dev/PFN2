@@ -182,6 +182,13 @@ $user = $_SESSION["user"]["nombre"];
         .breadcrumb-item {
             text-decoration: none;
         }
+        .admin{
+            border-bottom: 1px solid #666;
+            border-top: 1px solid #666;
+            padding-top: 22px;
+            padding-bottom: 22px;
+            
+        }
     </style>
 </head>
 
@@ -189,11 +196,11 @@ $user = $_SESSION["user"]["nombre"];
     <div class="navbar-container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <h1>Universidad</h1>
+            <h1 >Universidad</h1>
             <div class="flex justify-center">
                 <div class="">
                     <img class="hidden h-24 w-24 rounded-full sm:block object-cover mr-2 border-4" src="../assets/logo.jpeg" alt="">
-                    <p class="font-bold text-base  text-gray-400 pt-2 text-center w-24"><?php echo $user?></p>
+                    <p class="font-bold text-base  text-gray-400 pt-2 text-center w-24"><?= $user?></p>
                 </div>
             </div>
 
@@ -205,7 +212,9 @@ $user = $_SESSION["user"]["nombre"];
                     <i class="material-symbols-outlined">Home</i>
                     <a href="/dashboard">Home</a>
                 </li>
-                <?php if($usuario['rol_id'] === 1 ) {?>
+                <?php if($usuario['rol_id'] === 1 ) {?><?php }else{
+                        $usuario['rol_id'] === 2;
+                    }?>
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">security</i>
                     <a href="/permisos">Permisos</a>
@@ -214,9 +223,7 @@ $user = $_SESSION["user"]["nombre"];
                     <i class="material-symbols-outlined logOutText">group</i>
                     <a href="/maestros">Maestros</a>
                 </li>
-                    <?php }else{
-                        $usuario['rol_id'] === 2;
-                    }?>
+                    
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">school</i>
                     <a href="/alumnos">Alumnos</a>
