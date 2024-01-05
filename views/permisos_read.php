@@ -517,7 +517,7 @@ $user = $_SESSION["user"]["nombre"];
                 </div>
 
                 <!-- Contenedor sombreado (overlay) y formulario -->
-                <div class="overlay" id="overlay">
+                <!-- <div class="overlay" id="overlay">
                     <div class="modelos">
                         <h3>Editar Permisos</h3>
 
@@ -543,7 +543,7 @@ $user = $_SESSION["user"]["nombre"];
                         <button type="submit" class="">Submit</button>
 
                     </div>
-                </div>
+                </div> -->
 
                 <nav class="navbar navbar-expand  navbar-body">
                     <!-- <div class="container-fluid"> -->
@@ -662,7 +662,7 @@ $user = $_SESSION["user"]["nombre"];
 
                                 <td class="px-4 py-4 whitespace-no-wrap text-sm leading-5 border-table-action">
                                     <div class="space-x-4" id="open-btn">
-                                        <a class="text-blue-500 hover:text-blue-600 justify-center text-center fa-solid fa-pen-to-square square" onclick="mostrarFormulario()" href="/permisos/edit?id=<?= $permiso["id"] ?>">
+                                        <a class="text-blue-500 hover:text-blue-600 justify-center text-center fa-solid fa-pen-to-square square" href="/permisos/edit?id=<?= $permiso["id"] ?>">
                                         </a>
                                         </button>
 

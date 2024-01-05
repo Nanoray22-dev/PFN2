@@ -2,8 +2,10 @@
 session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/models/viewModel.php";
 $count = new ViewModel();
-$data = $count->allClases();
-$ocultar_div_permisos = 'hidden';
+$data = $count->allClasesCount();
+$clase_id = isset($maestro['clase_id']) ? $maestro['clase_id'] : "";
+$correo = isset($maestro["correo"]) ? $maestro["correo"] : "";
+
 
 //var_dump($pors_Admin * 1000);
 $rol = $_SESSION["user"]["Rol"];
@@ -116,7 +118,7 @@ $user = $_SESSION["user"]["nombre"];
     /* .nav-home {
     list-style: none;
     padding-top: 25px;
-} */
+     } */
 
     h4 {
         text-align: center;
@@ -342,7 +344,7 @@ $user = $_SESSION["user"]["nombre"];
     width: 100%;
     padding: 8px;
     margin-bottom: 16px;
-} */
+     } */
 
     .overlay {
         display: none;
@@ -415,18 +417,22 @@ $user = $_SESSION["user"]["nombre"];
                     <i class="material-symbols-outlined">Home</i>
                     <a href="/dashboard">Home</a>
                 </li>
-                <li class="side-bar-inside">
-                    <i class="material-symbols-outlined">security</i>
-                    <a href="/permisos">Permisos</a>
-                </li>
-                <li class="side-bar-inside">
-                    <i class="material-symbols-outlined logOutText">group</i>
-                    <a href="/maestros">Maestros</a>
-                </li>
-                <li class="side-bar-inside">
-                    <i class="material-symbols-outlined">school</i>
-                    <a href="/alumnos">Alumnos</a>
-                </li>
+                <?php if ($usuarios['rol_id'] == 1) : ?>
+
+                    <li class="side-bar-inside">
+                        <i class="material-symbols-outlined">security</i>
+                        <a href="/permisos">Permisos</a>
+                    </li>
+                    <li class="side-bar-inside">
+                        <i class="material-symbols-outlined logOutText">group</i>
+                        <a href="/maestros">Maestros</a>
+                    </li>
+                    <li class="side-bar-inside">
+                        <i class="material-symbols-outlined">school</i>
+                        <a href="/alumnos">Alumnos</a>
+                    </li>
+                <?php endif; ?>
+
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">book</i>
                     <a href="clases">Clases</a>
@@ -441,7 +447,7 @@ $user = $_SESSION["user"]["nombre"];
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link nav-name dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                           <?= $rol ?>
+                            <?= $rol ?>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/dashboard">Home</a></li>
@@ -462,7 +468,12 @@ $user = $_SESSION["user"]["nombre"];
             <div class="Dashboard">
                 <div class="header-Dasbord">
                     <p>Información de clases</p>
-                    <!-- <button onclick="mostrarFormulario()">Editar Permisos</button> -->
+                    <?php if ($usuarios['rol_id'] == 1) : ?>
+                    <button onclick="mostrarFormulario()">
+                        <a href="clases/create>"> agregar clases</a>
+                    </button>
+                    <?php endif; ?>
+
                 </div>
 
                 <!-- Contenedor sombreado (overlay) y formulario -->
@@ -470,22 +481,40 @@ $user = $_SESSION["user"]["nombre"];
                     <div class="modelos">
                         <h3>Editar clases</h3>
 
-                        <form d="formularioMaestro">
+                        <form id="formularioMaestro" method="post" action="/clases/edit">
+                            <input type="hidden" name="id" value="<?php $_GET['id'] ?>">
                             <div class="insert-Container">
                                 <label for="Email" class="form-labe">Email del usuario</label>
-                                <input type="email" class="form-control" id="Email1" aria-describedby="emailHelp" placeholder="admin@admin.com">
+                                <input type="email" class="form-control" id="Email1" aria-describedby="emailHelp" placeholder="<?= $user ?>">
                             </div>
-                            <div class="insert-Container">
-                                <label for="selectClases" class="form-labe">Rol de usuarios:</label>
-                                <select class="form-select" id="selectClases" aria-label="Seleccione una clase">
-                                    <option value="clase1">Clase 1</option>
-                                    <option value="clase2">Clase 2</option>
-                                    <option value="clase3">Clase 3</option>
-                                </select>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="clase_id">Clase Asignada:</label>
+                                <div class="flex col-span-3 sm:col-span-1">
+                                    <input id="clase_id" name="" disabled value="<?= $clase_id ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" placeholder="Rol del Usuario">
+
+                                    <select id="rolesUsuarios" name="clase_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value='' selected disabled>Seleccione una Clase</option>
+                                        <option value='NULL'>--Ninguno--</option>
+                                        <option value='1'>Español</option>
+                                        <option value='2'>Algebra</option>
+                                        <option value='3'>Contabilidad 1</option>
+                                        <option value='4'>Ecuaciones Diferenciales</option>
+                                        <option value='5'>PHP</option>
+                                        <option value='6'>Laravel</option>
+                                        <option value='7'>Programación de Bases de Datos</option>
+                                        <option value='8'>React</option>
+                                        <option value='9'>JavaScript</option>
+                                        <option value='10'>HTML CSS</option>
+                                        <option value='11'>Bootstrap Tailwindcss</option>
+                                        <option value='12'>MVC POO</option>
+                                        <option value='13'>Git Github</option>
+                                        <option value='14'>Valores</option>
+                                    </select>
+                                </div>
                             </div>
                         </form>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="<?= $estatus ?>">
                             <label class="form-check-label" for="flexSwitchCheckDefault">Usuario Activo</label>
                         </div>
                         <button class="" onclick="cerrarFormulario()">Cerrar</button>
@@ -541,7 +570,10 @@ $user = $_SESSION["user"]["nombre"];
                             <th class="border-table">clase</th>
                             <th class="border-table">Maestro</th>
                             <th class="border-table">Alumnos Inscrito</th>
-                            <th class="border-table">Acciones</th>
+                            <?php if ($usuarios['rol_id'] == 1) : ?>
+                                <th class="border-table">Acciones</th>
+                            <?php endif; ?>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -557,17 +589,20 @@ $user = $_SESSION["user"]["nombre"];
                                     $estilo = "";
                                     break;
                             }
-                            switch ($clase["maestro_nombre"]) {
+                            ////////////////////////////////////////////////////////////////////////////////
+                            //    print_r($clases);
+                            switch (is_array($data) && isset($data[0]['count(*)'])) {
                                 case 0:
-                                    $alumnosInscritos = "Sin Alumnos";
+                                    $data = "Sin Alumnos";
                                     $estilo2 = "bg-orange-100 text-black text-bold rounded px-2 py-0.5";
                                     break;
 
                                 default:
-                                    $alumnosInscritos = $clase["maestro_nombre"];
+                                    $alumnosInscritos = $data[0]['count(*)'];
                                     $estilo2 = "";
                                     break;
                             }
+
                         ?>
                             <tr>
                                 <td class="border-table"><?= $clase['clase_id']  ?></td>
@@ -578,10 +613,14 @@ $user = $_SESSION["user"]["nombre"];
                                 <td class="border-table">
                                     <p class="<?= $estilo2 ?>"><?= $alumnosInscritos ?>
                                 </td>
-                                <td class="border-table-action">
-                                    <a class="fa-solid fa-pen-to-square square" onclick="mostrarFormulario()"></a>
-                                    <!-- <a href=""><i class="fa-solid fa-trash"></i></a> -->
-                                </td>
+                                <?php if ($usuarios['rol_id'] == 1) : ?>
+
+                                    <td class="border-table-action">
+                                        <a class="fa-solid fa-pen-to-square square" onclick="mostrarFormulario()"></a>
+                                        <!-- <a href=""><i class="fa-solid fa-trash"></i></a> -->
+                                    </td>
+                                <?php endif; ?>
+
                             </tr>
 
 

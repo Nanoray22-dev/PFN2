@@ -15,7 +15,7 @@
 
 <body>
 
-<?php
+    <?php
     session_start();
     require_once $_SERVER["DOCUMENT_ROOT"] . "/models/viewModel.php";
     !isset($maestros) && header("Location: /maestros");
@@ -30,18 +30,15 @@
     //var_dump($usuarios["Rol"]);
     $user = $_SESSION["user"]["nombre"];
 
-    // if (isset($maestros['id'])) {
-    //     $maestroId = $maestros['id'];
-
-    //     // The rest of your code that uses $maestroId
-    //     // ...
-    // } else {
-    //     // Handle the case where 'id' key is not present in the array
-    //     echo "The 'id' key is not present in the \$maestros array.";
-    // }
+    $correo = isset($maestro["correo"]) ? $maestro["correo"] : "";
+    $nombre = isset($maestro["nombre"]) ? $maestro["nombre"] : "";
+    $fecha = isset($maestro['fecha_nac']) ? $maestro['fecha_nac'] : "";
+    $direccion = isset($maestro['direccion']) ? $maestro['direccion'] : "";
+    $clase_id = isset($maestro['clase_id']) ? $maestro['clase_id'] : "";
+    $estatus = isset($maestro['estatus']) ? $maestro['estatus'] : "";
     ?>
 
-  
+
 </body>
 
 </html>
@@ -423,6 +420,7 @@
     span.User {
         padding-top: 10px;
     }
+
     .content {
         flex: 1;
         background-color: rgb(245, 246, 249);
@@ -433,7 +431,7 @@
 </style>
 
 <body>
-   
+
     <div class="navbar-container">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -445,23 +443,26 @@
                 </div>
             </div>
             <ul class="side-bar-side">
-                <h4 class="admin">Menu <?=$rol?></h4>
+                <h4 class="admin">Menu <?= $rol ?></h4>
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">Home</i>
                     <a href="/dashboard">Home</a>
                 </li>
-                <li class="side-bar-inside">
-                    <i class="material-symbols-outlined">security</i>
-                    <a href="/permisos">Permisos</a>
-                </li>
-                <li class="side-bar-inside">
-                    <i class="material-symbols-outlined logOutText">group</i>
-                    <a href="/maestros">Maestros</a>
-                </li>
-                <li class="side-bar-inside">
-                    <i class="material-symbols-outlined">school</i>
-                    <a href="/alumnos">Alumnos</a>
-                </li>
+                <?php if ($usuarios['rol_id'] == 1) : ?>
+                    <li class="side-bar-inside">
+                        <i class="material-symbols-outlined">security</i>
+                        <a href="/permisos">Permisos</a>
+                    </li>
+                    <li class="side-bar-inside">
+                        <i class="material-symbols-outlined logOutText">group</i>
+                        <a href="/maestros">Maestros</a>
+                    </li>
+                    <li class="side-bar-inside">
+                        <i class="material-symbols-outlined">school</i>
+                        <a href="/alumnos">Alumnos</a>
+                    </li>
+                <?php endif; ?>
+
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">book</i>
                     <a href="/clases">Clases</a>
@@ -603,7 +604,7 @@
 
 
                 <!-- Modal -->
-                <div class="modal fade" id="x" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <!-- <div class="modal fade" id="x" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
@@ -613,26 +614,27 @@
                                         <div class="bg-white rounded-lg p-8 m-4 max-w-xl w-full show-modal">
                                             <h2 class="text-2xl font-bold mb-8">Editar Maestros</h2>
                                             <form id="editPermisos" action="/maestros/update" method="post">
+                                                <input type="hidden" name="id" value="<?php $_GET['id'] ?>">
                                                 <div class="mb-4">
                                                     <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo:</label>
-                                                    <input type="text" id="correo" name="correo" disabled value="<?= $maestro["correo"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                                    <input type="text" id="correo" name="correo" disabled value="<?= $correo ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
                                                 </div>
                                                 <div class="mb-4">
                                                     <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre:</label>
-                                                    <input type="text" id="nombre" name="nombre" value="<?= $maestro["nombre_maestro"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                                    <input type="text" id="nombre" name="nombre" value="<?= $nombre ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Nombre">
                                                 </div>
                                                 <div class="mb-4">
                                                     <label class="block text-gray-700 text-sm font-bold mb-2" for="direccion">Dirección:</label>
-                                                    <input type="text" id="direccion" name="direccion" value="<?= $maestro["direccion"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                                    <input type="text" id="direccion" name="direccion" value="<?= $direccion ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Direccion">
                                                 </div>
                                                 <div class="mb-4">
                                                     <label class="block text-gray-700 text-sm font-bold mb-2" for="fecha_nac">Fecha Nacimiento:</label>
-                                                    <input type="date" id="fecha_nac" name="fecha_nac" value="<?= $maestro["fecha_nac"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                                    <input type="date" id="fecha_nac" name="fecha_nac" value="<?= $fecha ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha de Nacimiento">
                                                 </div>
                                                 <div class="mb-4">
                                                     <label class="block text-gray-700 text-sm font-bold mb-2" for="clase_id">Clase Asignada:</label>
                                                     <div class="flex col-span-3 sm:col-span-1">
-                                                        <input id="clase_id" name="" disabled value="<?= $maestro["clase_id"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" placeholder="Rol del Usuario">
+                                                        <input id="clase_id" name="" disabled value="<?= $clase_id ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" placeholder="Clase asignada">
 
                                                         <select id="rolesUsuarios" name="clase_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                             <option value='' selected disabled>Seleccione una Clase</option>
@@ -657,7 +659,7 @@
                                                 <div class="mb-4">
                                                     <label class="block text-gray-700 text-sm font-bold mb-2" for="estatus">Estatus:</label>
                                                     <div class="flex col-span-2 sm:col-span-1">
-                                                        <input type="text" id="estatus" disabled name="" value="<?= $maestro["estatus"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" placeholder="Estatus del Usuario">
+                                                        <input type="text" id="estatus" disabled name="" value="<?= $estatus ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" placeholder="Estatus del Usuario">
 
                                                         <select id="estatusUsuarios" name="estatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                             <option value='' selected disabled>Seleccione un Estatus</option>
@@ -681,18 +683,18 @@
                                 </div>
                             </div>
 
-                            <!-- Cambiando los roles del menú desplegable -->
+
                             <script type="text/javascript">
-                                // Actualizar el valor del input cuando cambia el valor del select
+
                                 document.getElementById('rolesUsuarios').addEventListener('change', function() {
                                     var valorSeleccionadoRol = this.value;
                                     document.getElementById('clase_id').value = valorSeleccionadoRol;
-                                    //$asignatura = valorSeleccionadoRol;
+
                                 });
                             </script>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Editor en la tablas -->
 
@@ -785,13 +787,16 @@
                                     <p class="<?= $estilo ?>"><?= $claseAsignada ?></p>
                                 </td>
                                 <td class="border-table-action">
-                                    <a type="button" class="btn-primary table-action" data-bs-toggle="modal" data-bs-target="#x" href="/maestros/edit?id=<?= $maestro["id"] ?>">
+                                    <a class="btn-primary table-action"  href="/maestros/edit?id=<?= $maestro["id"] ?>">
                                         <i class="fa-solid fa-pen-to-square "></i>
                                     </a>
                                     <a>
-                                        <i class="fa-solid fa-trash"> <?php
-                                                                        if ($btn_delete)
-                                                                        ?>
+
+                                        <i class="fa-solid fa-trash">
+                                            <?php
+                                            if ($btn_delete) {
+                                            }
+                                            ?>
                                         </i>
                                     </a>
                                 </td>
@@ -827,8 +832,7 @@
 
 
 
-    <script>
-
+    <!-- <script>
         function mostrarFormulario() {
             var overlay = document.getElementById('overlay');
             overlay.style.display = 'flex';
@@ -848,7 +852,7 @@
             var overlay = document.getElementById('overlay');
             overlay.style.display = 'none';
         }
-    </script>
+    </script> -->
 </body>
 
 </html>

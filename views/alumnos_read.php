@@ -442,6 +442,8 @@
                     <i class="material-symbols-outlined">Home</i>
                     <a href="/dashboard">Home</a>
                 </li>
+                <?php if($usuarios['rol_id']== 1) :?>
+                
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">security</i>
                     <a href="/permisos">Permisos</a>
@@ -454,6 +456,8 @@
                     <i class="material-symbols-outlined">school</i>
                     <a href="/alumnos">Alumnos</a>
                 </li>
+                <?php endif; ?>
+
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">book</i>
                     <a href="/clases">Clases</a>
@@ -471,8 +475,8 @@
                            <?= $rol?>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/views/template/Dashboard.php">Home</a></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                            <li><a class="dropdown-item" href="/dashboard">Home</a></li>
+                            <li><a class="dropdown-item" href="/index.php">Logout</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -505,6 +509,7 @@
                                 <div class="bg-white rounded-lg p-8 m-4 max-w-xl w-full show-modal">
                                     <h2 class="text-2xl font-bold mb-8">Editar Alumnos</h2>
                                     <form id="editPermisos" action="/alumnos/update" method="post">
+                                        <!-- <input type="hidden" name="id" value="<?php $_GET['id'] ?>"> -->
                                         <div class="mb-4">
                                             <label class="block text-gray-700 text-sm font-bold mb-2" for="dni">DNI:</label>
                                             <input type="text" id="dni" name="dni" value="<?= $alumno["dni"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
@@ -670,7 +675,7 @@
                                 <td class="border-table"><?= $alumno['direccion'] ?></td>
                                 <td class="border-table"> <?= $alumno['fecha_nac'] ?></td>
                                 <td class="border-table-action">
-                                    <a class="fa-solid fa-pen-to-square square" onclick="mostrarFormulario()"></a>
+                                    <a class="fa-solid fa-pen-to-square square" href="/alumnos/edit?id=<?php $alumno['id'] ?>"></a>
                                     <a href="/alumnos/delete?id=<?= $alumno["id"]?>"><i class="fa-solid fa-trash text-red-500"></i></a>
                                     
                                 </td>

@@ -18,6 +18,8 @@ class PermisoController{
         include $_SERVER["DOCUMENT_ROOT"] . "/views/permisos_edit.php";
     }
     public function update($resquest){
+
+
         $this->model->update($resquest);
 
         header("Location: /permisos");

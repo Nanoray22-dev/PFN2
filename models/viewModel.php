@@ -66,6 +66,11 @@ class ViewModel
         $data = $rs->fetch_all(MYSQLI_ASSOC);
         return $data;
     }
+    public function allClasesCount(){
+        $rs = $this->conexion->query("SELECT count(*) FROM clases");
+        $data = $rs->fetch_all(MYSQLI_ASSOC);
+        return $data;
+    }
     public function allAlumnos()
     {
         $sql = "SELECT usuarios.id, usuarios.dni, usuarios.nombre, usuarios.correo, usuarios.direccion, usuarios.fecha_nac, usuarios.rol_id, usuarios.clase_id, usuarios.estatus  FROM usuarios 
@@ -96,6 +101,7 @@ class ViewModel
         INNER JOIN roles on usuarios.rol_id = roles.id
         WHERE roles.nombre = 'Alumno'");
         $data = $rs->fetch_all(MYSQLI_ASSOC);
+        return $data;
     }
 
     public function find($id)
@@ -134,45 +140,47 @@ class ViewModel
         }
     }
 // ///////////////////////////////////////////////////////////////////////////////////
-    public function update($data)
-    {
-        try {
-            // Verificar si 'id' está presente en el array $data
-            if (!isset($data['id'])) {
-                throw new Exception("Error: El índice 'id' es obligatorio para la actualización.");
-            }
-    
-            // Construir pares clave-valor para la actualización
-            $updatePairs = [];
-            foreach ($data as $key => $value) {
-                // Excluir 'id' de los pares clave-valor para evitar actualizarlo
-                if ($key !== 'id') {
-                    $updatePairs[] = "$key = '$value'";
-                }
-            }
-    
-            // Verificar si hay campos para actualizar
-            if (empty($updatePairs)) {
-                throw new Exception("Error: No hay campos para actualizar.");
-            }
-    
-            // Convertir el array en una cadena para la consulta
-            $updateString = implode(', ', $updatePairs);
-    
-            // Construir la consulta SQL
-            $query = "UPDATE `usuarios` SET $updateString WHERE `id` = {$data['id']}";
-    
-            // Preparar y ejecutar la consulta
-            $updateId = $this->conexion->prepare($query);
-            $updateId->execute();
-    
-            // Retorna un indicador de éxito, puedes personalizar según tus necesidades
-            return true;
-        } catch (Exception $e) {
-            // Manejar cualquier excepción
-            throw new Exception("Error al actualizar usuario: " . $e->getMessage());
+   public function update($data)
+{
+    // print_r($data);
+    try {
+        // Verificar si 'id' está presente en el array $data
+        if (!isset($data['id'])) {
+            throw new Exception("Error: El índice 'id' es obligatorio para la actualización.");
         }
+
+        // Construir pares clave-valor para la actualización
+        $updatePairs = [];
+        foreach ($data as $key => $value) {
+            // Excluir 'id' de los pares clave-valor para evitar actualizarlo
+            if ($key !== 'id') {
+                $updatePairs[] = "$key = '$value'";
+            }
+        }
+
+        // Verificar si hay campos para actualizar
+        if (empty($updatePairs)) {
+            throw new Exception("Error: No hay campos para actualizar.");
+        }
+
+        // Convertir el array en una cadena para la consulta
+        $updateString = implode(', ', $updatePairs);
+
+        // Construir la consulta SQL correctamente
+        $query = "UPDATE `usuarios` SET $updateString WHERE `id` = {$data['id']}";
+
+        // Preparar y ejecutar la consulta
+        $updateId = $this->conexion->prepare($query);
+        $updateId->execute();
+
+        // Retorna un indicador de éxito, puedes personalizar según tus necesidades
+        return true;
+    } catch (Exception $e) {
+        // Manejar cualquier excepción
+        throw new Exception("Error al actualizar usuario: " . $e->getMessage());
     }
+    // echo $query;
+}
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function delete($id)

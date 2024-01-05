@@ -22,8 +22,9 @@ class MaestroController {
         include $_SERVER['DOCUMENT_ROOT'] . '/views/maestro_edit.php';
     }
     public function update($request){
-         $this->model->update($request);
-         header("Location: /maestros");
+        print_r($request);
+        //  $this->model->update($request);
+        //  header("Location: /maestros");
     }
     public function store($request){
         $response = $this->model->create($request);

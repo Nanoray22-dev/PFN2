@@ -6,22 +6,6 @@ session_start();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/models/viewModel.php";
 
 
-
-if (isset($_SESSION['user'])) {
-    $usuario = $_SESSION['user'];
-    $alumnos = ['clases' => 'index.php?'];
-    $noAdministador = ['clases' => 'index.php?', 'alumnos' => 'index.php?',];
-    $Administador = ['Permisos' => 'index.php?', 'Maestros' => 'index.php?', 'Alumnos' => 'index.php?', 'Clases' => 'index.php?',];
-
-    if ($usuario['rol_id'] === 1) {
-        $menu = $Administador;
-    } else if ($usuario['rol_id'] === 2) {
-        $menu = $noAdministador;
-    } else if ($usuario['rol_id'] === 3) {
-        $menu = $alumnos;
-    }
-}
-
 $rol = $_SESSION["user"]["Rol"];
 $usuarios = $_SESSION["user"];
 $user = $_SESSION["user"]["nombre"];
@@ -212,9 +196,8 @@ $user = $_SESSION["user"]["nombre"];
                     <i class="material-symbols-outlined">Home</i>
                     <a href="/dashboard">Home</a>
                 </li>
-                <?php if($usuario['rol_id'] === 1 ) {?><?php }else{
-                        $usuario['rol_id'] === 2;
-                    }?>
+                    <?php if($usuarios['rol_id']== 1) :?>
+                       
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">security</i>
                     <a href="/permisos">Permisos</a>
@@ -228,11 +211,18 @@ $user = $_SESSION["user"]["nombre"];
                     <i class="material-symbols-outlined">school</i>
                     <a href="/alumnos">Alumnos</a>
                 </li>
-
+                    
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">book</i>
                     <a href="/clases">Clases</a>
                 </li>
+                <?php endif; ?>
+                <?php if($usuarios['rol_id']== 2) :?>
+                <li class="side-bar-inside">
+                    <i class="material-symbols-outlined">book</i>
+                    <a href="/clases">Materias</a>
+                </li>
+                <?php endif; ?>
 
             </ul>
         </div>
