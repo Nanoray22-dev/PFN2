@@ -220,7 +220,7 @@ $user = $_SESSION["user"]["nombre"];
                 <?php if($usuarios['rol_id']== 2) :?>
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">book</i>
-                    <a href="/clases">Materias</a>
+                    <a href="/claseAsignada">Materias</a>
                 </li>
                 <?php endif; ?>
 
@@ -234,7 +234,7 @@ $user = $_SESSION["user"]["nombre"];
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link link-user dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <?php echo $rol; ?>
+                                <?= $rol ?>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/dashboard">Home</a></li>

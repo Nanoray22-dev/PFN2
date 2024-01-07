@@ -1,4 +1,5 @@
 <?php
+
 require_once($_SERVER["DOCUMENT_ROOT"] . "/controllers/LoginController.php");
 require_once($_SERVER["DOCUMENT_ROOT"] . "/controllers/HomeController.php");
 require_once($_SERVER["DOCUMENT_ROOT"] . "/controllers/PermisoController.php");
@@ -34,12 +35,12 @@ if ($method === "POST") {
         case '/maestros/edit';
             $maestroEnrutador->update($_POST);
             break;
-            case '/maestros/update';
+        case '/maestros/update';
             $maestroEnrutador->update($_POST);
-        case '/maestros/delete';
-            $maestroEnrutador->delete($_POST["$id"]);
+            break;
+
         case '/clases/delete';
-            $clasesEnrutador->delete($_POST["$id"]);
+            $clasesEnrutador->delete($_POST["id"]);
             break;
         case '/clases/create';
             $clasesEnrutador->store($_POST);
@@ -91,6 +92,9 @@ if ($method === "GET") {
         case '/clases';
             $clasesEnrutador->index();
             break;
+            case '/claseAsignada';
+            $clasesEnrutador->claseAsignada();
+            break;
         case 'clases/create';
             $clasesEnrutador->create();
             break;
@@ -104,6 +108,12 @@ if ($method === "GET") {
             break;
         case '/alumnos/create';
             $alumnosEnrutador->create();
+            break;
+        case '/alumnos/delete';
+            $alumnosEnrutador->delete($_GET["id"]);
+            break;
+        case '/maestros/delete';
+            $maestroEnrutador->delete($_GET["id"]);
             break;
         default:
             echo "NO ENCONTRAMOS LA RUTA.";

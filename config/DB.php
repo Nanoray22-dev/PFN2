@@ -1,5 +1,5 @@
 <?php
-
+require_once['DOCUMENT_ROOT'] . './config/config.php';
 class DB{
     public static function query($query){
         try {

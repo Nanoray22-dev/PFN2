@@ -1,15 +1,15 @@
 <?php
-session_start();
-require_once $_SERVER["DOCUMENT_ROOT"] . "/models/viewModel.php";
+if (!isset($clases)) {
+    header("Location: /dashboard");
+}
 $count = new ViewModel();
 $data = $count->allClasesCount();
-$clase_id = isset($maestro['clase_id']) ? $maestro['clase_id'] : "";
-$correo = isset($maestro["correo"]) ? $maestro["correo"] : "";
 $rol = $_SESSION["user"]["Rol"];
 $usuarios = $_SESSION["user"];
 $user = $_SESSION["user"]["nombre"];
 
-$_SESSION["usuario_edit"] = isset($clases["id"]) ? $clases["id"] : null;
+
+
 
 ?>
 <!DOCTYPE html>
@@ -468,9 +468,9 @@ $_SESSION["usuario_edit"] = isset($clases["id"]) ? $clases["id"] : null;
                 <div class="header-Dasbord">
                     <p>Información de clases</p>
                     <?php if ($usuarios['rol_id'] == 1) : ?>
-                    <button onclick="mostrarFormulario()">
-                        <a href="clases/create>"> agregar clases</a>
-                    </button>
+                        <button onclick="mostrarFormulario()">
+                            <a href="clases/create>"> agregar clases</a>
+                        </button>
                     <?php endif; ?>
 
                 </div>
@@ -562,90 +562,44 @@ $_SESSION["usuario_edit"] = isset($clases["id"]) ? $clases["id"] : null;
                     <!-- </div> -->
                 </nav>
 
-                <table class="table table-hover" id="myTable">
+                <table class="table table-hover" id="">
                     <thead>
                         <tr>
                             <th class="border-table">#</th>
                             <th class="border-table">clase</th>
                             <th class="border-table">Maestro</th>
                             <th class="border-table">Alumnos Inscrito</th>
-                            <?php if ($usuarios['rol_id'] == 1) : ?>
-                                <th class="border-table">Acciones</th>
-                            <?php endif; ?>
-
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($clases as $clase) {
-                            switch ($clase['maestro_nombre']) {
-                                case Null:
-                                    $maestroAsignado = "Sin Asignacion";
-                                    $estilo = "bg-orange-500 text-white rounded px-2 py-0.5";
-                                    break;
+                        <?php
+                        switch (is_array($data) && isset($data[0]['count(*)'])) {
+                            case 0:
+                                $data = "Sin Alumnos";
+                                $estilo2 = "bg-orange-100 text-black text-bold rounded px-2 py-0.5";
+                                break;
 
-                                default:
-                                    $maestroAsignado = $clase["maestro_nombre"];
-                                    $estilo = "";
-                                    break;
-                            }
-                            ////////////////////////////////////////////////////////////////////////////////
-                            //    print_r($clases);
-                            switch (is_array($data) && isset($data[0]['count(*)'])) {
-                                case 0:
-                                    $data = "Sin Alumnos";
-                                    $estilo2 = "bg-orange-100 text-black text-bold rounded px-2 py-0.5";
-                                    break;
-
-                                default:
-                                    $alumnosInscritos = $data[0]['count(*)'];
-                                    $estilo2 = "";
-                                    break;
-                            }
-
+                            default:
+                                $alumnosInscritos = $data[0]['count(*)'];
+                                $estilo2 = "";
+                                break;
+                        }
                         ?>
-                            <tr>
-                                <td class="border-table"><?= $clase['clase_id']  ?></td>
-                                <td class="border-table"><?= $clase["clase_nombre"] ?></td>
-                                <td class="border-table">
-                                    <p class="<?= $estilo ?>"><?= $maestroAsignado ?></p>
-                                </td>
-                                <td class="border-table">
+                        <tr>
+                            <td class="border-table"><?= $clases['id']  ?></td>
+                            <td class="border-table"><?= $clases["nombre"] ?></td>
+                            <td class="border-table"><?= $usuarios['nombre'] ?></td>
+                            <td class="border-table">
                                     <p class="<?= $estilo2 ?>"><?= $alumnosInscritos ?>
                                 </td>
-                                <?php if ($usuarios['rol_id'] == 1) : ?>
-
-                                    <td class="border-table-action">
-                                        <a class="fa-solid fa-pen-to-square square" onclick="mostrarFormulario()"></a>
-                                        <a href="/index.php"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
-                                <?php endif; ?>
-
-                            </tr>
+                        </tr>
 
 
-                        <?php } ?>
+
                     </tbody>
                 </table>
 
-                <nav aria-label="Page navigation ">
-                    <span class="User">
-                        Showing
-                        <?php echo (is_array($data) && isset($data[0]['count(*)'])) ? $data[0]['count(*)'] : 0; ?> to
-                        <?php echo (is_array($data) && isset($data[0]['count(*)'])) ? $data[0]['count(*)'] : 0; ?> of entries
 
-                    </span>
-
-                    <ul class="pagination justify-content-end">
-                        <li class="page-item ">
-                            <a class="page-link disabled">Previous</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </div>
@@ -653,26 +607,6 @@ $_SESSION["usuario_edit"] = isset($clases["id"]) ? $clases["id"] : null;
 
 
 
-    <script>
-        function mostrarFormulario() {
-            var overlay = document.getElementById('overlay');
-            overlay.style.display = 'flex';
-        }
-
-        function cerrarFormulario() {
-            var overlay = document.getElementById('overlay');
-            overlay.style.display = 'none';
-        }
-    </script>
-    <script>
-    $(document).ready(function() {
-        $('#myTable').DataTable({
-            lengthMenu: [4, 5],
-            searching: true,
-            pageLength: 3
-        });
-    });
-</script>
 </body>
 
 </html>

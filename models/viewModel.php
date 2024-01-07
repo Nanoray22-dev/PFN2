@@ -110,7 +110,7 @@ class ViewModel
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = $result->fetch_all(MYSQLI_ASSOC);
+        $data = $result->fetch_assoc();
         $stmt->close();
 
         return $data;
@@ -139,64 +139,62 @@ class ViewModel
             echo "Error: " . $e->getMessage();
         }
     }
-// ///////////////////////////////////////////////////////////////////////////////////
+
    public function update($data)
 {
-    // print_r($data);
+
     try {
-        // Verificar si 'id' está presente en el array $data
         if (!isset($data['id'])) {
             throw new Exception("Error: El índice 'id' es obligatorio para la actualización.");
         }
 
-        // Construir pares clave-valor para la actualización
+
         $updatePairs = [];
         foreach ($data as $key => $value) {
-            // Excluir 'id' de los pares clave-valor para evitar actualizarlo
+
             if ($key !== 'id') {
                 $updatePairs[] = "$key = '$value'";
             }
         }
 
-        // Verificar si hay campos para actualizar
+
         if (empty($updatePairs)) {
             throw new Exception("Error: No hay campos para actualizar.");
         }
 
-        // Convertir el array en una cadena para la consulta
+
         $updateString = implode(', ', $updatePairs);
 
-        // Construir la consulta SQL correctamente
+
         $query = "UPDATE `usuarios` SET $updateString WHERE `id` = {$data['id']}";
 
-        // Preparar y ejecutar la consulta
+
         $updateId = $this->conexion->prepare($query);
         $updateId->execute();
 
-        // Retorna un indicador de éxito, puedes personalizar según tus necesidades
+
         return true;
     } catch (Exception $e) {
-        // Manejar cualquier excepción
         throw new Exception("Error al actualizar usuario: " . $e->getMessage());
     }
-    // echo $query;
-}
-// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+}
+
+    
     public function delete($id)
     {
-        $query = "DELETE FROM usuarios WHERE id = $id";
+        $query = 'DELETE FROM usuarios WHERE id = ?';
+       
         try {
-            $data = $this->conexion->prepare($query);
-            $data->execute([$id]);
-        } catch (mysqli_sql_exception $e) {
-            echo "Error: " . $e->getMessage();
+            $stm = $this->conexion->prepare($query);
+            $stm->execute([$id]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
         }
     }
-
     public function login($A, $B, $operator, $value, $password)
     {
-        $query = "SELECT usuarios.id, usuarios.nombre, usuarios.correo, usuarios.password, roles.nombre AS Rol, usuarios.rol_id, usuarios.estatus FROM usuarios 
+        $query = "SELECT usuarios.clase_id, usuarios.id, usuarios.nombre, usuarios.correo, usuarios.password, roles.nombre AS Rol, usuarios.rol_id, usuarios.estatus FROM usuarios 
             INNER JOIN roles  ON roles.id = usuarios.rol_id WHERE $A $operator '$value' and $B $operator '$password'";
 
         $rs = $this->conexion->query("$query");
@@ -214,5 +212,17 @@ class ViewModel
     public function __toString()
     {
         return 'Output';
+    }
+    public function claseDeMaestro($id){
+        $query = 'SELECT  * FROM clases WHERE  id = ?';
+        $stmt = $this->conexion->prepare($query);
+
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+        $stmt->close();
+
+        return $data;
     }
 }

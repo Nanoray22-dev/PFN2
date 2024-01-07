@@ -22,19 +22,19 @@ class AlumnoController{
 
     public function update($request){
 
-        // print_r($request);
+
         $this->model->update($request);
-        header('location : /alumnos');
+        header('location: /alumnos');
     }
     public function store($request){
         $response = $this->model->create($request);
-        header('location : /alumnos');
+        header('location: /alumnos');
     }
 
     public function delete($id){
-        print_r($id);
+
         $this ->model->delete($id);
-        header('location : /alumnos');
+        header('location: /alumnos');
     }
 }
 

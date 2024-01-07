@@ -2,8 +2,9 @@
 !isset($alumnos) && header("Location: /alumnos");
 
 session_start();
-// Almacenar el ID del alumno en la sesión
-$_SESSION["usuarioid_edit"] = isset($alumnos["id"]) ? $alumnos["id"] : null;
+
+$_SESSION["usuario_edit"] = isset($alumnos["id"]) ? $alumnos["id"] : null;
+print_r($alumnos);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -36,8 +37,7 @@ $_SESSION["usuarioid_edit"] = isset($alumnos["id"]) ? $alumnos["id"] : null;
                 <div class="bg-white rounded-lg p-8 m-4 max-w-xl w-full show-modal">
                     <h2 class="text-2xl font-bold mb-8">Editar Alumnos</h2>
                     <form id="editPermisos" action="/alumnos/update" method="post">
-                        <!-- Utilizar el operador ternario para evitar índices no definidos -->
-                        <input type="hidden" name="id" value="<?= isset($_GET['id']) ? $_GET['id'] : ''; ?>">
+                        <input type="hidden" name="id" value="<?= $_GET['id'] ?>">
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="dni">DNI:</label>
                             <input type="text" id="dni" name="dni" value="<?= isset($alumnos["dni"]) ? $alumnos["dni"] : ''; ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="DNI">

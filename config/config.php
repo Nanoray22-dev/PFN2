@@ -6,5 +6,3 @@ return [
     "db_password" => "",
     "db_port" => 8111
 ];
-
-

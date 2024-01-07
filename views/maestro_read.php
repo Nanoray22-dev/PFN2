@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <!--CSS TailWindcss CLI-->
+
     <link href="../css/output.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
@@ -433,7 +433,7 @@
 <body>
 
     <div class="navbar-container">
-        <!-- Sidebar -->
+
         <div class="sidebar">
             <h1>Universidad</h1>
             <div class="flex justify-center header-img">
@@ -470,7 +470,7 @@
             </ul>
         </div>
 
-        <!-- navbar principal -->
+
         <div class="content">
             <div class="navbar-header">
                 <div class="burger-menu">&#9776; Home</div>
@@ -510,10 +510,10 @@
                     </button>
                 </div>
 
-                <!-- Button trigger modal -->
 
 
-                <!-- Modal -->
+
+
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -598,113 +598,22 @@
                         </div>
                     </div>
                 </div>
-                <!--  -->
-
-                <!-- Editor en la tablas -->
 
 
-                <!-- Modal -->
-                <!-- <div class="modal fade" id="x" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
-
-                                <div class="fixed z-10 inset-0 overflow-y-auto">
-                                    <div class="flex items-center justify-center min-h-screen">
-                                        <div class="bg-white rounded-lg p-8 m-4 max-w-xl w-full show-modal">
-                                            <h2 class="text-2xl font-bold mb-8">Editar Maestros</h2>
-                                            <form id="editPermisos" action="/maestros/update" method="post">
-                                                <input type="hidden" name="id" value="<?php $_GET['id'] ?>">
-                                                <div class="mb-4">
-                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo:</label>
-                                                    <input type="text" id="correo" name="correo" disabled value="<?= $correo ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
-                                                </div>
-                                                <div class="mb-4">
-                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre:</label>
-                                                    <input type="text" id="nombre" name="nombre" value="<?= $nombre ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Nombre">
-                                                </div>
-                                                <div class="mb-4">
-                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="direccion">Dirección:</label>
-                                                    <input type="text" id="direccion" name="direccion" value="<?= $direccion ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Direccion">
-                                                </div>
-                                                <div class="mb-4">
-                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="fecha_nac">Fecha Nacimiento:</label>
-                                                    <input type="date" id="fecha_nac" name="fecha_nac" value="<?= $fecha ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha de Nacimiento">
-                                                </div>
-                                                <div class="mb-4">
-                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="clase_id">Clase Asignada:</label>
-                                                    <div class="flex col-span-3 sm:col-span-1">
-                                                        <input id="clase_id" name="" disabled value="<?= $clase_id ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" placeholder="Clase asignada">
-
-                                                        <select id="rolesUsuarios" name="clase_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                            <option value='' selected disabled>Seleccione una Clase</option>
-                                                            <option value='NULL'>--Ninguno--</option>
-                                                            <option value='1'>Español</option>
-                                                            <option value='2'>Algebra</option>
-                                                            <option value='3'>Contabilidad 1</option>
-                                                            <option value='4'>Ecuaciones Diferenciales</option>
-                                                            <option value='5'>PHP</option>
-                                                            <option value='6'>Laravel</option>
-                                                            <option value='7'>Programación de Bases de Datos</option>
-                                                            <option value='8'>React</option>
-                                                            <option value='9'>JavaScript</option>
-                                                            <option value='10'>HTML CSS</option>
-                                                            <option value='11'>Bootstrap Tailwindcss</option>
-                                                            <option value='12'>MVC POO</option>
-                                                            <option value='13'>Git Github</option>
-                                                            <option value='14'>Valores</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-4">
-                                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="estatus">Estatus:</label>
-                                                    <div class="flex col-span-2 sm:col-span-1">
-                                                        <input type="text" id="estatus" disabled name="" value="<?= $estatus ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" placeholder="Estatus del Usuario">
-
-                                                        <select id="estatusUsuarios" name="estatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                            <option value='' selected disabled>Seleccione un Estatus</option>
-                                                            <option value='1'>Activo</option>
-                                                            <option value='0'>Inactivo</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="flex items-center justify-between">
-                                                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                                                        Guardar cambios
-                                                    </button>
-                                                    <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline close-modal">
-                                                        <a href="/maestros">Cerrar</a>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
 
-                            <script type="text/javascript">
 
-                                document.getElementById('rolesUsuarios').addEventListener('change', function() {
-                                    var valorSeleccionadoRol = this.value;
-                                    document.getElementById('clase_id').value = valorSeleccionadoRol;
 
-                                });
-                            </script>
-                        </div>
-                    </div>
-                </div> -->
 
-                <!-- Editor en la tablas -->
+
 
                 <nav class="navbar navbar-expand  navbar-body">
-                    <!-- <div class="container-fluid"> -->
-                    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+
+
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
+
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0  text-bg-secondary">
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="#">Copy</a>
@@ -787,19 +696,14 @@
                                     <p class="<?= $estilo ?>"><?= $claseAsignada ?></p>
                                 </td>
                                 <td class="border-table-action">
-                                    <a class="btn-primary table-action"  href="/maestros/edit?id=<?= $maestro["id"] ?>">
+                                    <a class="btn-primary table-action" href="/maestros/edit?id=<?= $maestro["id"] ?>">
                                         <i class="fa-solid fa-pen-to-square "></i>
                                     </a>
-                                    <a>
-
-                                        <i class="fa-solid fa-trash">
-                                            <?php
-                                            if ($btn_delete) {
-                                            }
-                                            ?>
-                                        </i>
+                                    <a class="btn-primary table-action" href="/maestros/delete?id=<?= $maestro["id"] ?>">
+                                        <i class="fa-solid fa-trash"></i>
                                     </a>
                                 </td>
+
                             </tr>
 
                         <?php } ?>
@@ -832,27 +736,6 @@
 
 
 
-    <!-- <script>
-        function mostrarFormulario() {
-            var overlay = document.getElementById('overlay');
-            overlay.style.display = 'flex';
-        }
-
-        function mostrarEditor() {
-            var over = document.getElementById('over');
-            over.style.display = 'flex';
-        }
-
-        function cerrarFormulario() {
-            var overlay = document.getElementById('over');
-            overlay.style.display = 'none';
-        }
-
-        function cerrarFormulario() {
-            var overlay = document.getElementById('overlay');
-            overlay.style.display = 'none';
-        }
-    </script> -->
 </body>
 
 </html>

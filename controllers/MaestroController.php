@@ -13,6 +13,7 @@ class MaestroController {
         $maestros = $this->model->allMaestro();
         include $_SERVER["DOCUMENT_ROOT"] . "/views/maestro_read.php";
     }
+    
     public function create(){
         include $_SERVER['DOCUMENT_ROOT'] . '/views/maestro_create.php';
 
@@ -20,11 +21,12 @@ class MaestroController {
     public function edit($id){
         $maestros = $this->model->find($id);
         include $_SERVER['DOCUMENT_ROOT'] . '/views/maestro_edit.php';
+
     }
     public function update($request){
-        print_r($request);
-        //  $this->model->update($request);
-        //  header("Location: /maestros");
+
+         $this->model->update($request);
+         header("Location: /maestros");
     }
     public function store($request){
         $response = $this->model->create($request);

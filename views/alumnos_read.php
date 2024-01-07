@@ -1,3 +1,22 @@
+<?php
+session_start();
+require_once $_SERVER["DOCUMENT_ROOT"] . "/models/viewModel.php";
+$count = new ViewModel();
+$data = $count->allAlumnosUser();
+!isset($alumnos) && header("Location: /alumnos");
+
+$ocultar_div_permisos = 'hidden';
+
+
+$rol = $_SESSION["user"]["Rol"];
+$usuarios = $_SESSION["user"];
+$user = $_SESSION["user"]["nombre"];
+$student = $_SESSION["user"];
+?>
+
+
+
+
 <!DOCTYPE html>
 <html x-data="data('bienvenido')" lang="es">
 
@@ -14,26 +33,12 @@
 </head>
 
 <body>
-    <?php
-    session_start();
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/models/viewModel.php";
-    $count = new ViewModel();
-    $data = $count->allAlumnosUser();
-    !isset($alumnos) && header("Location: /alumnos");
-
-    $ocultar_div_permisos = 'hidden';
 
 
-    $rol = $_SESSION["user"]["Rol"];
-    $usuarios = $_SESSION["user"];
-    $user = $_SESSION["user"]["nombre"];
-    $student = $_SESSION["user"];
-    ?>
 
 
-  
 
-   
+
 </body>
 
 </html>
@@ -119,6 +124,7 @@
         flex: 1;
         background-color: rgb(245, 246, 249);
     }
+
     .content {
         width: 80%;
         max-height: 750px;
@@ -372,6 +378,7 @@
         align-items: center;
         z-index: 1;
     }
+
     .over {
         display: none;
         position: fixed;
@@ -409,13 +416,16 @@
     .square {
         text-decoration: none;
     }
-    .nav-link{
+
+    .nav-link {
         color: #fff;
     }
-    .nav-name{
+
+    .nav-name {
         color: #000;
     }
-    .admin{
+
+    .admin {
         border-bottom: 1px solid #666;
         border-top: 1px solid #666;
         padding-top: 22px;
@@ -437,25 +447,25 @@
             </div>
 
             <ul class="side-bar-side">
-                <h4 class="admin">Menu <?=$rol?></h4>
+                <h4 class="admin">Menu <?= $rol ?></h4>
                 <li class="side-bar-inside">
                     <i class="material-symbols-outlined">Home</i>
                     <a href="/dashboard">Home</a>
                 </li>
-                <?php if($usuarios['rol_id']== 1) :?>
-                
-                <li class="side-bar-inside">
-                    <i class="material-symbols-outlined">security</i>
-                    <a href="/permisos">Permisos</a>
-                </li>
-                <li class="side-bar-inside">
-                    <i class="material-symbols-outlined logOutText">group</i>
-                    <a href="/maestros">Maestros</a>
-                </li>
-                <li class="side-bar-inside">
-                    <i class="material-symbols-outlined">school</i>
-                    <a href="/alumnos">Alumnos</a>
-                </li>
+                <?php if ($usuarios['rol_id'] == 1) : ?>
+
+                    <li class="side-bar-inside">
+                        <i class="material-symbols-outlined">security</i>
+                        <a href="/permisos">Permisos</a>
+                    </li>
+                    <li class="side-bar-inside">
+                        <i class="material-symbols-outlined logOutText">group</i>
+                        <a href="/maestros">Maestros</a>
+                    </li>
+                    <li class="side-bar-inside">
+                        <i class="material-symbols-outlined">school</i>
+                        <a href="/alumnos">Alumnos</a>
+                    </li>
                 <?php endif; ?>
 
                 <li class="side-bar-inside">
@@ -472,7 +482,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link nav-name dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                           <?= $rol?>
+                            <?= $rol ?>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/dashboard">Home</a></li>
@@ -497,38 +507,97 @@
                 </div>
 
                 <!-- Contenedor sombreado (overlay) y formulario -->
-                <?php foreach( $alumnos as $alumno){ ?>
-                <div class="overlay" id="overlay">
-                    script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                <?php foreach ($alumnos as $alumno) { ?>
+                    <div class="overlay" id="overlay">
+                        script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 
+                        <div class="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
+
+                            <div class="fixed z-10 inset-0 overflow-y-auto">
+                                <div class="flex items-center justify-center min-h-screen">
+                                    <div class="bg-white rounded-lg p-8 m-4 max-w-xl w-full show-modal">
+                                        <h2 class="text-2xl font-bold mb-8">Editar Alumnos</h2>
+                                        <form id="editPermisos" action="/alumnos/update" method="post">
+                                            <input type="hidden" name="id" value="<?php $_GET['id'] ?>">
+                                            <div class="mb-4">
+                                                <label class="block text-gray-700 text-sm font-bold mb-2" for="dni">DNI:</label>
+                                                <input type="text" id="dni" name="dni" value="<?= $alumno["dni"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo:</label>
+                                                <input type="text" id="correo" name="correo" disabled value="<?= $alumno["correo"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre:</label>
+                                                <input type="text" id="nombre" name="nombre" value="<?= $alumno["nombre"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="block text-gray-700 text-sm font-bold mb-2" for="direccion">Dirección:</label>
+                                                <input type="text" id="direccion" name="direccion" value="<?= $alumno["direccion"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="block text-gray-700 text-sm font-bold mb-2" for="fecha_nac">Fecha Nacimiento:</label>
+                                                <input type="date" id="fecha_nac" name="fecha_nac" value="<?= $alumno["fecha_nac"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                            </div>
+
+                                            <div class="flex items-center justify-between">
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                                                    Guardar cambios
+                                                </button>
+                                                <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline close-modal">
+                                                    <a href="/alumnos">Cerrar</a>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+
+                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+                <div class="over" id="over">
                     <div class="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
 
                         <div class="fixed z-10 inset-0 overflow-y-auto">
                             <div class="flex items-center justify-center min-h-screen">
                                 <div class="bg-white rounded-lg p-8 m-4 max-w-xl w-full show-modal">
-                                    <h2 class="text-2xl font-bold mb-8">Editar Alumnos</h2>
-                                    <form id="editPermisos" action="/alumnos/update" method="post">
-                                        <!-- <input type="hidden" name="id" value="<?php $_GET['id'] ?>"> -->
-                                        <div class="mb-4">
-                                            <label class="block text-gray-700 text-sm font-bold mb-2" for="dni">DNI:</label>
-                                            <input type="text" id="dni" name="dni" value="<?= $alumno["dni"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
-                                        </div>
+                                    <h2 class="text-2xl font-bold mb-8">Nuevos Alumnos</h2>
+                                    <form id="editPermisos" action="/alumnos/create" method="post">
                                         <div class="mb-4">
                                             <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo:</label>
-                                            <input type="text" id="correo" name="correo" disabled value="<?= $alumno["correo"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                            <input type="text" id="correo" name="correo" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
                                         </div>
                                         <div class="mb-4">
                                             <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre:</label>
-                                            <input type="text" id="nombre" name="nombre" value="<?= $alumno["nombre"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                            <input type="text" id="nombre" name="nombre" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Nombre">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">DNI:</label>
+                                            <input type="text" id="dni" name="dni" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="DNI">
                                         </div>
                                         <div class="mb-4">
                                             <label class="block text-gray-700 text-sm font-bold mb-2" for="direccion">Dirección:</label>
-                                            <input type="text" id="direccion" name="direccion" value="<?= $alumno["direccion"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                            <input type="text" id="direccion" name="direccion" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Direccion">
                                         </div>
                                         <div class="mb-4">
                                             <label class="block text-gray-700 text-sm font-bold mb-2" for="fecha_nac">Fecha Nacimiento:</label>
-                                            <input type="date" id="fecha_nac" name="fecha_nac" value="<?= $alumno["fecha_nac"] ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
+                                            <input type="date" id="fecha_nac" name="fecha_nac" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
+                                        </div>
+                                        <div class="hidden mb-4">
+                                            <label class="block text-gray-700 text-sm font-bold mb-2" for="rol_id">Rol_id:</label>
+                                            <input type="text" id="rol_id" name="rol_id" value="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
+                                        </div>
+                                        <div class="hidden mb-4">
+                                            <label class="block text-gray-700 text-sm font-bold mb-2" for="estatus">Estatus:</label>
+                                            <input type="text" id="estatus" name="estatus" value="1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
+                                        </div>
+                                        <div class="hidden mb-4">
+                                            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password:</label>
+                                            <input type="password" id="password" name="password" value="alumno" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
                                         </div>
 
                                         <div class="flex items-center justify-between">
@@ -545,75 +614,16 @@
                         </div>
                     </div>
                 </div>
-                <?php }?>
-
-                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-                <div class="over" id="over">
-                <div class="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-50">
-
-                    <div class="fixed z-10 inset-0 overflow-y-auto">
-                        <div class="flex items-center justify-center min-h-screen">
-                            <div class="bg-white rounded-lg p-8 m-4 max-w-xl w-full show-modal">
-                                <h2 class="text-2xl font-bold mb-8">Nuevos Alumnos</h2>
-                                <form id="editPermisos" action="/alumnos/create" method="post">
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo:</label>
-                                        <input type="text" id="correo" name="correo" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre:</label>
-                                        <input type="text" id="nombre" name="nombre" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Nombre">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">DNI:</label>
-                                        <input type="text" id="dni" name="dni" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="DNI">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2" for="direccion">Dirección:</label>
-                                        <input type="text" id="direccion" name="direccion" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Direccion">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2" for="fecha_nac">Fecha Nacimiento:</label>
-                                        <input type="date" id="fecha_nac" name="fecha_nac" value="" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
-                                    </div>
-                                    <div class="hidden mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2" for="rol_id">Rol_id:</label>
-                                        <input type="text" id="rol_id" name="rol_id" value="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
-                                    </div>
-                                    <div class="hidden mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2" for="estatus">Estatus:</label>
-                                        <input type="text" id="estatus" name="estatus" value="1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
-                                    </div>
-                                    <div class="hidden mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password:</label>
-                                        <input type="password" id="password" name="password" value="alumno" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Fecha Nacimiento">
-                                    </div>
-
-                                    <div class="flex items-center justify-between">
-                                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                                            Guardar cambios
-                                        </button>
-                                        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline close-modal">
-                                            <a href="/alumnos">Cerrar</a>
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
 
 
 
                 <nav class="navbar navbar-expand  navbar-body">
-                    <!-- <div class="container-fluid"> -->
-                    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+
+
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
+
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 bg-secondary text-white">
                         <li class="nav-item">
                             <a class="nav-link " aria-current="page" href="#">Copy</a>
@@ -641,10 +651,10 @@
                     <form class="head-search">
                         <label for="search"></label>
                         <input type="search" placeholder="Search:">
-                        <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+
                     </form>
-                    <!-- </div> -->
-                    <!-- </div> -->
+
+
                 </nav>
 
                 <table class="table  table-hover">
@@ -675,9 +685,9 @@
                                 <td class="border-table"><?= $alumno['direccion'] ?></td>
                                 <td class="border-table"> <?= $alumno['fecha_nac'] ?></td>
                                 <td class="border-table-action">
-                                    <a class="fa-solid fa-pen-to-square square" href="/alumnos/edit?id=<?php $alumno['id'] ?>"></a>
-                                    <a href="/alumnos/delete?id=<?= $alumno["id"]?>"><i class="fa-solid fa-trash text-red-500"></i></a>
-                                    
+                                    <a class="fa-solid fa-pen-to-square square" href="/alumnos/edit?id=<?= $alumno['id'] ?>"></a>
+                                    <a href="/alumnos/delete?id=<?= $alumno["id"] ?>"><i class="fa-solid fa-trash text-red-500"></i></a>
+
                                 </td>
                             </tr>
 
@@ -687,7 +697,7 @@
                 </table>
 
                 <nav aria-label="Page navigation ">
-                <span class="User">
+                    <span class="User">
                         Showing
                         <?php echo (is_array($data) && isset($data[0]['count(*)'])) ? $data[0]['count(*)'] : 0; ?> to
                         <?php echo (is_array($data) && isset($data[0]['count(*)'])) ? $data[0]['count(*)'] : 0; ?> of entries
@@ -713,8 +723,6 @@
 
 
     <script>
-        
-
         function mostrarFormulario() {
             var overlay = document.getElementById('overlay');
             overlay.style.display = 'flex';

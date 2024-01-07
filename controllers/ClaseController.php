@@ -11,6 +11,16 @@ class ClaseController {
         $clases = $this ->model->allClases();
         include $_SERVER["DOCUMENT_ROOT"] . '/views/clases_read.php';
     }
+    public function claseAsignada(){
+        session_start();
+         $usuario =  $_SESSION["user"];
+
+         $clases = $this ->model->claseDeMaestro($usuario['clase_id']);
+
+
+         include $_SERVER["DOCUMENT_ROOT"] . '/views/clase_asignada.php';
+
+    }
     public function create(){
         include $_SERVER["DOCUMENT_ROOT"] . '/views/clases/create.php';
     }
